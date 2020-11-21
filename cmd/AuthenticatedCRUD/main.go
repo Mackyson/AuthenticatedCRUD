@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	// "AuthenticatedCRUD/internal/handler"
-	// "AuthenticatedCRUD/internal/storage"
+	"AuthenticatedCRUD/internal/httpHandler"
+	"AuthenticatedCRUD/internal/storage"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"
@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	// storage.Migrate()
+	storage.Migrate()
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
@@ -24,14 +24,14 @@ func main() {
 	router.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 		w.Write([]byte("OK!"))
 	})
-	// router.GET("/api/users", handler.GetUserlist) //全ユーザの提示
-	// router.POST("/api/signup", handler.SignUp)    //ユーザ登録
-	// router.GET("/api/signin", handler.SignIn)     //ログイン
+	// router.GET("/api/users", httpHandler.GetUserlist) //全ユーザの提示
+	router.POST("/api/signup", httpHandler.SignUp) //ユーザ登録
+	// router.GET("/api/signin", httpHandler.SignIn)     //ログイン
 	// //以下，認証必要
-	// router.GET("/api/:name", handler.GetUserTaskList)       //全タスクの提示
-	// router.GET("api/:name/:id", handler.GetUserTaskDetails) //タスクの詳細
-	// router.DELETE("/api/:name/:id", handler.DeleteUserTask) //タスクの削除
-	// router.PUT("/api/:name/:id", handler.UpdateUserTask)    //タスクの変更
+	// router.GET("/api/:name", httpHandler.GetUserTaskList)       //全タスクの提示
+	// router.GET("api/:name/:id", httpHandler.GetUserTaskDetails) //タスクの詳細
+	// router.DELETE("/api/:name/:id", httpHandler.DeleteUserTask) //タスクの削除
+	// router.PUT("/api/:name/:id", httpHandler.UpdateUserTask)    //タスクの変更
 
 	static := httprouter.New()
 	static.ServeFiles("/*filepath", http.Dir("./webpage/static/"))

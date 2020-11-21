@@ -1,0 +1,35 @@
+version: '3'
+services:
+
+    authenticated_crud:
+        build:
+          context: .
+          dockerfile: ./build/AuthenticatedCRUD/Dockerfile
+        container_name: AuthenticatedCRUD
+        restart: always
+        ports:
+          - 8080:8080
+        environment:
+          - PORT=8080
+          - GO111MODULE=on
+          - DB_HOST=mysql
+          - DB_PORT=3306
+          - DB_NAME=db
+          - DB_USER=root
+          - DB_PASSWORD=root
+
+    db:
+        image: mysql
+        container_name: mysql
+        restart: always
+        ports:
+          - 3306:3306
+        environment:
+          - MYSQL_ROOT_PASSWORD=root
+          - MYSQL_DATABASE=db
+          - MYSQL_USER=devuser
+          - MYSQL_PASSWORD=devpasswd
+        volumes:
+          - ./build/db/data:/var/lib/mysql
+          - ./build/db/my.cnf:/etc/mysql/conf.d/my.cnf
+

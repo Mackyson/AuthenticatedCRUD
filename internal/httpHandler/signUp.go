@@ -9,10 +9,13 @@ import (
 
 	"AuthenticatedCRUD/model"
 	"AuthenticatedCRUD/pkg/DButil"
+	"AuthenticatedCRUD/pkg/encrypt"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/julienschmidt/httprouter"
 )
+
+const STRETCH_NUM = 5
 
 func SignUp(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
@@ -22,6 +25,8 @@ func SignUp(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	)
 
 	json.NewDecoder(read).Decode(&user)
+
+	user.Password = string(encrypt.HashPassword([]byte(user.Password), STRETCH_NUM))
 
 	fmt.Printf("%+v\n%+v", user, &model.User{}) //dbg
 	db := DButil.GetClient()

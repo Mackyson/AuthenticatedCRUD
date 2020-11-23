@@ -12,8 +12,8 @@ const secret = "gomi"
 func main() {
 	fmt.Println("----generate phase----")
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		IssuedAt: time.Now().Unix(),
-		Subject:  "1",
+		ExpiresAt: time.Now().Add(-1 * time.Second).Unix(),
+		Subject:   "1",
 	})
 	s, err := token.SignedString([]byte(secret))
 	fmt.Printf("%s\n%v\n", s, err)
@@ -39,5 +39,5 @@ func main() {
 	}
 }
 func getKey() []byte {
-	return []byte(secret + "boke")
+	return []byte(secret)
 }

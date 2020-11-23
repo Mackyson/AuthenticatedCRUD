@@ -9,11 +9,15 @@ import (
 
 	"AuthenticatedCRUD/model"
 	"AuthenticatedCRUD/pkg/DButil"
-	"AuthenticatedCRUD/pkg/encrypt"
+	"AuthenticatedCRUD/pkg/crypto"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/julienschmidt/httprouter"
 )
+
+/*
+NameとPasswordをJSONで受け取る→Passwordハッシュ化→ハッシュを秘密鍵にしたJWT生成→JSONで返す
+*/
 
 const STRETCH_NUM = 5
 
@@ -24,12 +28,20 @@ func SignUp(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		user model.User
 	)
 
+	db := DButil.GetClient()
+
 	json.NewDecoder(read).Decode(&user)
 
-	user.Password = string(encrypt.HashPassword([]byte(user.Password), STRETCH_NUM))
+	if user.Name == "" {
+		io.WriteString(w, "\"error\":\"Name is empty\"")
+		return
+	}
+	if user.Password == "" { //パスワードのバリデーションはもっと長さとか記号とか大文字小文字とかいろいろ凝るべきだが，めんどいのでなしとする．
+		io.WriteString(w, "\"error\":\"Password is empty\"")
+		return
+	}
 
-	fmt.Printf("%+v\n%+v", user, &model.User{}) //dbg
-	db := DButil.GetClient()
+	user.Password = string(crypto.HashPassword([]byte(user.Password), STRETCH_NUM))
 
 	result := db.Create(&user)
 	if result.Error != nil {

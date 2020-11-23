@@ -26,7 +26,7 @@ func main() {
 	})
 	// router.GET("/api/users", httpHandler.GetUserlist) //全ユーザの提示
 	router.POST("/api/signup", httpHandler.SignUp) //ユーザ登録
-	// router.GET("/api/signin", httpHandler.SignIn)     //ログイン
+	router.GET("/api/signin", httpHandler.SignIn)  //ログイン
 	// //以下，認証必要
 	// router.GET("/api/:name", httpHandler.GetUserTaskList)       //全タスクの提示
 	// router.GET("api/:name/:id", httpHandler.GetUserTaskDetails) //タスクの詳細

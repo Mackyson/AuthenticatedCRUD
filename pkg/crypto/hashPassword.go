@@ -1,4 +1,4 @@
-package encrypt
+package crypto
 
 import (
 	"golang.org/x/crypto/bcrypt"
@@ -9,7 +9,7 @@ func HashPassword(password []byte, cost int) []byte {
 	return hash
 }
 
-func CompareHash(hash, password []byte) bool {
+func IsValidPassword(hash, password []byte) bool {
 	err := bcrypt.CompareHashAndPassword(hash, password)
 	return err == nil
 }

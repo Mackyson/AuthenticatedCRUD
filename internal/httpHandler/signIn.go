@@ -44,7 +44,7 @@ func SignIn(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		IssuedAt: time.Now().Unix(),
 		Subject:  fmt.Sprint(userDB.ID),
 	})
-	s, err := token.SignedString([]byte(userInput.Password))
+	s, err := token.SignedString([]byte(userDB.Password))
 	if err != nil {
 		io.WriteString(w, "\"error\":\""+result.Error.Error()+"\"")
 		return

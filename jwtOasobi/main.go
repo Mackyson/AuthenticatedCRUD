@@ -12,7 +12,7 @@ const secret = "gomi"
 func main() {
 	fmt.Println("----generate phase----")
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(-1 * time.Second).Unix(),
+		ExpiresAt: time.Now().Add(1 * time.Second).Unix(),
 		Subject:   "1",
 	})
 	s, err := token.SignedString([]byte(secret))

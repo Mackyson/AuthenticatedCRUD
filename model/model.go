@@ -19,6 +19,6 @@ type User struct {
 type Task struct {
 	gorm.Model
 	Title   string `json:"title" gorm:"not null"`
-	State   int    `json:"state" gorm:"not null"`
-	OwnerId uint   `json:"owner_id" gorm:"not null"`
+	Status  int    `json:"status" gorm:"not null"`
+	OwnerID uint   `json:"owner_id" gorm:"not null"`
 }

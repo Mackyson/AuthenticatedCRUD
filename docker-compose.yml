@@ -1,11 +1,11 @@
 version: '3'
 services:
 
-    authenticated_crud:
+    app:
         build:
           context: .
           dockerfile: ./build/AuthenticatedCRUD/Dockerfile
-        container_name: AuthenticatedCRUD
+        container_name: app
         restart: always
         ports:
           - 8080:8080
@@ -17,6 +17,8 @@ services:
           - DB_NAME=db
           - DB_USER=root
           - DB_PASSWORD=root
+        volumes:
+          - ./:/go/src/app/
 
     db:
         image: mysql
